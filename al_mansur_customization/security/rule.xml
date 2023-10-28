@@ -1,0 +1,9 @@
+<odoo>
+<data>
+
+<record id="group_batching" model="res.groups">
+<field name="name">Batching Plant</field>
+<field name="category_id" ref="base.module_category_accounting_and_finance"/>
+</record>
+</data>
+</odoo>

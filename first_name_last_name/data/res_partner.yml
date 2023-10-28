@@ -1,0 +1,3 @@
+# -*- coding: utf-8 -*-
+
+- !function {model: res.partner, name: _install_partner_firstname}

@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+
+from odoo import models, fields, api
+
+class alm-multi-location(models.Model):
+     _name = 'alm.multi.location'
+     _inherit = ['purchase.order']
+
+     name = fields.Char()
+     value = fields.Integer()
+     value2 = fields.Float(compute="_value_pc", store=True)
+     description = fields.Text()
+
+     @api.multi
+     def _get_destination_location(self):
+        self.ensure_one()
+        if self.account_analytic_id.location:
+            return self.account_analytic_id.location.id
+        return self.picking_type_id.default_location_dest_id.id
+

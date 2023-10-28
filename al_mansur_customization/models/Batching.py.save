@@ -1,0 +1,52 @@
+from odoo import models, fields, api
+from datetime import datetime
+
+
+class purchase_request_extend(models.Model):
+    _inherit="purchase.request"
+
+
+    send_to = fields.Selection([(
+		'procurement','Procurement'),('batching','Batching Plant')],default="procurement")
+
+
+
+class SalesOrderExtend(models.Model):
+    _inherit = "sale.order"
+
+    name = fields.Text(string='Description')
+    purchase_request_id = fields.Many2one('purchase.request',string="Purchase Request")
+
+    @api.onchange('purchase_request_id')
+    def _compute_sale_line_new(self):
+        for rec in self:
+            lines = []
+            for request in rec.purchase_request_id.line_ids:
+                lines.append((0, 0, {
+                    'product_id':request.product_id.id,
+                    'product_uom_qty': request.product_qty,
+                     'product_uom':request.product_id.uom_id.id,
+		     'name':request.product_id.name,
+              })
+	      )
+            rec.order_line = lines
+
+
+
+class BatchingPlantClass(models.Model):
+    _name = "bp.production"
+
+
+    name = fields.Char()
+    production_date = fields.Date(string="Date of Production")
+    created_by = fields.Many2one('res.user',string="Created By")
+    purchase_request_id = fields.Many2one('purchase.request',string="Purchase Request Reference")
+    production_line = fields.One2many('bp.production.line','id',string="Production line")
+    state = fields.Selection([('draft','Draft'),('posted','Posted')],default='draft')
+
+class BatchingPlantLineClass(models.TransientModel):
+    _name= "bp.production.line"
+
+   
+    product_id = fields.Many2one('product.product',string="Product")
+    qty_produced = fields.Float(string="Quantity Produced")

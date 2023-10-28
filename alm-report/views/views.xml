@@ -1,0 +1,47 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+        
+    <record model="ir.ui.view" id="form_alm_trial_bal_report">
+      <field name="name">alm_trial_bal_report</field>
+      <field name="model">account.balance.report</field>
+      <field name="inherit_id" ref="account.account_common_report_view" />
+      <field name="arch" type="xml">
+        <!-- <data> -->
+          <xpath expr="//group" position="after">
+            <group>
+              <!-- <label string="Analytic Accounts" /> -->
+              <field name="analytic_acc_ids" widget="many2many_tags" />
+            </group>
+          </xpath>
+
+          <xpath expr="//footer/button[@name='check_report']" position="replace">
+            <button name="recompute_journal_ids" string="Print" default_focus="1" class="oe_highlight" type="object" />
+          </xpath>
+        <!-- </data> -->
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="form_alm_financial_report">
+      <field name="name">alm_financial_report</field>
+      <field name="model">accounting.report</field>
+      <field name="inherit_id" ref="account.accounting_report_view" />
+      <field name="arch" type="xml">
+        <!-- <data> -->
+          <xpath expr="//group" position="after">
+            <group>
+              <!-- <label string="Analytic Accounts" /> -->
+              <field name="analytic_acc_ids" widget="many2many_tags" />
+            </group>
+          </xpath>
+
+          <xpath expr="//footer/button[@name='check_report']" position="replace">
+            <button name="recompute_journal_ids" string="Print" default_focus="1" class="oe_highlight" type="object" />
+          </xpath>
+        <!-- </data> -->
+      </field>
+    </record>
+
+  </data>
+</odoo>

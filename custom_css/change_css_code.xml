@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <template id="assets_backend" name="kincotech_css" inherit_id="web.assets_backend">
+
+            <xpath expr="." position="inside">
+
+            <link rel="stylesheet" href="/custom_css/static/src/css/changes.css"/>
+            <script type="text/javascript" src="/custom_css/static/src/js/javascript.js"/>
+            </xpath>
+        </template>
+
+
+    
+    </data>
+</openerp>

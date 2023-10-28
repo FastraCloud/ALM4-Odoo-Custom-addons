@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_alm-multi-location_alm-multi-location,alm-multi-location.alm-multi-location,model_alm_multi_location,,1,0,0,0
+access_multi-user,multi-location_access_general,model_alm_multi_location,,1,0,0,0
+

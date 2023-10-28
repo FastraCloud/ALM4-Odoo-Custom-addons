@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="vendor_registration_form_view" model="ir.ui.view">
+            <field name="name">vendor.registration.form.view</field>
+            <field name="model">vendor.registration</field>
+            <field name="arch" type="xml">
+                <form string="Vendor Registration Form">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="type_of_vendor"/>
+                            <field name="major_supplier"/>
+                            <field name="vendor_sales_name"/>
+                        </group>
+
+                        <group>
+                            <group string="Managing Director / Owner">
+                                <field name="managing_director_name"/>
+                                <field name="managing_director_mobile_1"/>
+                                <field name="managing_director_mobile_2"/>
+                                <field name="managing_director_email"/>
+                            </group>
+                            <group string="Person to be contacted for all">
+                                <field name="person_contacted_name"/>
+                                <field name="person_contacted_mobile_1"/>
+                                <field name="person_contacted_mobile_2"/>
+                                <field name="person_contacted_email"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <field name="name_of_banker"/>
+                            <field name="account_no"/>
+                            <field name="company_address"/>
+                            <field name="min_order_value"/>
+                            <field name="payment_term"/>
+                            <field name="delivery_term"/>
+                            <field name="vat"/>
+                            <field name="overall_turn_over_for_year"/>
+                            <field name="major_customers"/>
+                            <field name="details_of_major_project"/>
+                            <field name="items_supplied"/>
+                            <field name="manpower"/>
+                            <field name="details_of_collaborators"/>
+                            <field name="details_of_quality"/>
+                            <field name="other_info"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="vendor_registration_tree_view" model="ir.ui.view">
+            <field name="name">vendor.registration.tree.view</field>
+            <field name="model">vendor.registration</field>
+            <field name="arch" type="xml">
+                <tree string="Vendor Registration Tree">
+                    <field name="name"/>
+                    <field name="type_of_vendor"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="vendor_registration_view_action" model="ir.actions.act_window">
+            <field name="name">Vendor Registration</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vendor.registration</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Vendor Registration" id="menu_vendor_registration_root" parent="purchase.menu_procurement_management"
+                  action="vendor_registration_view_action"/>
+
+    </data>
+</openerp>

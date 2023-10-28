@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report 
+    id="action_alm_analytic_report" 
+    string="Trial Balance Items with Analytic Accounts" 
+    model="account.balance.report" 
+    report_type="qweb-pdf"
+    name="alm-report.report_alm_report_template" 
+    />
+
+    <report 
+    id="action_alm_financial_report" 
+    string="Financial Reports by Analytic Accounts" 
+    model="accounting.report" 
+    report_type="qweb-pdf"
+    name="alm-report.report_alm_fin_report_template" 
+    />
+
+
+    <template id="report_alm_fin_report_template" inherit_id="account.report_financial">
+        <xpath expr="//div[@class='col-xs-4']" position="after">
+            <div class="col-xs-12 col-md-12" style="margin:10px; border: 2px solid red;">
+                <h3><strong class="pull-left">Analytic Account(s): </strong></h3>
+                <!-- <br/> -->
+                <p>
+                    <t t-foreach="docs" t-as="o">
+                        <!-- <span t-field="o.analytic_acc_ids.name" t-field-options='{"fields": ["name"]}' /> -->
+                        <t t-foreach="o.analytic_acc_ids" t-as="analytic_acc">
+                            <t t-if="o.analytic_acc_ids">
+                                <i><span t-field="analytic_acc.code" /> <span t-field="analytic_acc.name" />, </i>
+                            </t>
+                            <t t-elif="o.analytic_acc_ids_size is 0">
+                                <b><span>Unspecified</span></b>
+                            </t>
+                        </t>
+                    </t>
+                </p>
+            </div>
+        </xpath>
+    </template>
+
+
+    <template id="report_alm_report_template" inherit_id="account.report_trialbalance">
+        <xpath expr="//t[@t-call='report.html_container']" position="replace">
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                        <!-- <div class="col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5 text-center">
+                            <span t-esc="res_company.name"/>
+                        </div> -->
+                        <h2 class="text-center"><span t-esc="res_company.name"/>: Trial Balance</h2>
+
+                        <div class="row mt32 center-block">
+                            <div class="col-xs-4 col-md-3">
+                                <strong>Display Account:</strong>
+                                <p>
+                                    <span t-if="data['display_account'] == 'all'">All accounts</span>
+                                    <span t-if="data['display_account'] == 'movement'">With movements</span>
+                                    <span t-if="data['display_account'] == 'not_zero'">With balance not equal to zero</span>
+                                </p>
+                            </div>
+                            <div class="col-xs-4 col-md-3 col-md-offset-1">
+                                <p>
+                                    <t t-if="data['date_from']"><strong>Date from :</strong> <span t-esc="data['date_from']"/><br/></t>
+                                    <t t-if="data['date_to']"><strong>Date to :</strong> <span t-esc="data['date_to']"/></t>
+                                </p>
+                            </div>
+                            <div class="col-xs-4 col-md-4 col-md-offset-1">
+                                <strong>Target Moves:</strong>
+                                <p>
+                                    <span t-if="data['target_move'] == 'all'">All Entries</span>
+                                    <span t-if="data['target_move'] == 'posted'">All Posted Entries</span>
+                                </p>
+                            </div>
+                            <div class="col-xs-12 col-md-12" style="margin:10px; border: 2px solid red;">
+                                <h3><strong class="pull-left">Analytic Account(s): </strong></h3>
+                                <!-- <br/> -->
+                                <p>
+                                    <t t-foreach="docs" t-as="o">
+                                        <!-- <span t-field="o.analytic_acc_ids.name" t-field-options='{"fields": ["name"]}' /> -->
+                                        <t t-foreach="o.analytic_acc_ids" t-as="analytic_acc">
+                                            <t t-if="o.analytic_acc_ids">
+                                                <i><span t-field="analytic_acc.code" /> <span t-field="analytic_acc.name" />, </i>
+                                            </t>
+                                            <t t-elif="o.analytic_acc_ids_size is 0">
+                                                <b><span>Unspecified</span></b>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </p>
+                            </div>
+                        </div>
+
+                        <table class="table table-condensed">
+                            <div class="container">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-xs-2"><strong>Code</strong></th>
+                                            <th class="col-xs-4"><strong>Account</strong></th>
+                                            <th class="col-xs-2 text-right"><strong>Debit</strong></th>
+                                            <th class="col-xs-2 text-right"><strong>Credit</strong></th>
+                                            <th class="col-xs-2 text-right"><strong>Balance</strong></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="Accounts" t-as="account">
+                                            <td>
+                                                <span t-att-style="style" t-esc="account['code']"/>
+                                            </td>
+                                            <td>
+                                                <span style="color: white;" t-esc="'..'"/>
+                                                <span t-att-style="style" t-esc="account['name']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-att-style="style" t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-att-style="style" t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-att-style="style" t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+        <!-- <xpath expr="//div[@class='col-xs-4']" position="after">
+            
+        </xpath> -->
+    </template>
+
+</odoo>

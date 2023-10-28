@@ -1,0 +1,193 @@
+
+<odoo>
+  <data>
+
+	    <record id="almansur_account_form_inherit" model="ir.ui.view">
+                <field name="name">Account Extended</field>
+                <field name="model">account.account</field>
+                <field name="inherit_id" ref="account.view_account_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr='//field[@name="user_type_id"]' position="after">
+                    <field name="account_category" />
+
+                    </xpath>
+                </field>
+        </record>
+
+
+
+
+
+     <record id="almansur_account_invoice_supplier_form_inherit" model="ir.ui.view">
+                <field name="name">almansur.account.invoice_supplier.form.inherit</field>
+                <field name="model">account.invoice</field>
+                <field name="inherit_id" ref="account.invoice_supplier_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr='//field[@name="reference"]' position="after">
+ 			<field name="account_analytic_id" />
+  	
+                    </xpath>
+                </field>
+        </record>
+
+           <record id="almansur_purchase_request_form_inherit" model="ir.ui.view">
+                <field name="name">almansur.account.purchase_request.form.inherit</field>
+                <field name="model">purchase.request</field>
+                <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr='//field[@name="line_ids"]' position="replace">
+                             <field name="line_ids">
+                                <tree decoration-muted="cancelled == True" editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="product_qty"/>
+                                    <field name="product_uom_id" invisible="1" groups="product.group_uom"/>
+                                    <field name="unit_of_measure" />
+                                    <field name="analytic_account_id" required="1" groups="analytic.group_analytic_accounting"/>
+                                    <field name="analytic_tag_ids" required="1" groups="analytic.group_analytic_accounting"/>
+                                    <field name="date_required"/>
+                                    <field name="cancelled" invisible="1"/>
+                                    <field name="is_editable" invisible="1"/>
+                                </tree>
+                             </field>
+                    </xpath>
+	      
+
+		<xpath expr='//field[@name="requested_by"]' position="replace">
+			
+		
+		</xpath>
+                </field>
+        </record>
+
+   <record id="almansur_purchase_request_form_inherit" model="ir.ui.view">
+                <field name="name">almansur.account.purchase_request.form.inherit</field>
+                <field name="model">purchase.request</field>
+                <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr='//field[@name="line_ids"]' position="replace">
+                             <field name="line_ids">
+                                <tree decoration-muted="cancelled == True" editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="product_qty"/>
+
+                                   <field name="product_uom_id" groups="product.group_uom"/>
+                                  	<field name="unit_of_measure" />
+                                     <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+ <field name="analytic_tag_ids" required="1" groups="analytic.group_analytic_accounting"/>
+                                   
+ <field name="date_required"/>
+                                    <field name="cancelled" invisible="1"/>
+                                    <field name="is_editable" invisible="1"/>
+                                </tree>
+                             </field>
+                    </xpath>
+                </field>
+        </record>
+
+
+     <record id="almansur_account_invoice_form_inherit" model="ir.ui.view">
+                <field name="name">almansur.account.invoice_form.inherit</field>
+                <field name="model">account.invoice</field>
+                <field name="inherit_id" ref="account.invoice_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr='//button[@name="action_invoice_open"]' position="replace">
+                       <button name="action_invoice_open" type="object" attrs="{'invisible':[('state', '!=', 'proforma2')]}" states="approved,proforma2" string="Validate" class="oe_highlight" groups="account.group_account_invoice"/>
+                    </xpath>
+		   <xpath expr='//field[@name="state"]' postion="replace">
+			 <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,waiting,approved,open,paid"/>
+	           </xpath>
+			<xpath expr='//button[@name="action_invoice_open"]' position="after">
+			<button name="action_invoice_request_approval" attrs="{'invisible':[('state','!=','draft')]}" type="object" states="draft" string="Request Approval" class="oe_highlight" groups="account.group_account_invoice"/>
+	<button name="action_invoice_approve" type="object" states="waiting" string="Approve" class="oe_highlight" groups="account.group_account_manager"/>
+	<button name="action_invoice_disapprove" type="object" states="waiting" string="Disapprove" class="oe_highlight" groups="account.group_account_manager"/>			
+</xpath>
+			
+                </field>
+        </record>
+
+   <record id="almansur_partner_payment_form" model="ir.ui.view">
+                       <field name="name">almansur.account.partner.supplier.form.inherit</field>
+                <field name="model">res.partner</field>
+                <field name="inherit_id" ref="base.view_partner_form"/>
+               <field name="arch" type= "xml">
+              <xpath expr="//field[@name='phone']" position="replace">
+			<!--	<field name="invoice_report_id" />-->
+  </xpath>
+                </field>
+
+    </record>
+
+
+
+<record id="almansu_vendor_inherit" model="ir.ui.view">
+        <field name="name">Invoice</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+        <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+
+                        <field name="account_analytic_id"/>
+
+                </xpath>
+
+        </field>
+
+</record>
+
+
+
+<record id="almansur_analytics_inherit" model="ir.ui.view">
+        <field name="name">Analytics Account</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                      
+			<field name="address"/>
+			<field name="phone" />			
+
+                </xpath>
+
+        </field>
+
+</record>
+
+
+<record id="almansur_purchase_order_inherit" model="ir.ui.view">
+ 	<field name="name">Purchase Order</field>
+	<field name="model">purchase.order</field>
+	<field name="inherit_id" ref="purchase.purchase_order_form"/>
+	<field name="arch" type="xml">
+		<xpath expr="//field[@name='date_order']" position="after">
+			<field name="purchase_request_ids" />
+			<field name="approved_by" readonly="1"/>
+			
+		</xpath>
+	
+	</field>
+
+</record>
+
+    <record id="almansur_puchase_payment_menuitem_action" model="ir.actions.act_window">
+         <field name="name">Payment</field>
+      <field name="res_model">account.payment</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record id="almansur_puchase_request_to_approve_menuitem_action" model="ir.actions.act_window">
+         <field name="name">Purchase orders awaiting payment</field>
+      <field name="res_model">purchase.order</field>
+      <field name="view_mode">tree,form</field>
+         <field name="domain">['|', ('invoice_status', '=', 'to invoice'), ('state', '=', 'purchase')]</field>
+    </record>
+
+
+
+         <menuitem id="account.menu_action_account_payments_payable" name="Payments"  string="Payment" parent="account.menu_finance" action="almansur_puchase_payment_menuitem_action"  sequence="4"/>
+         <menuitem id="account.menu_action_purchase_order_to_approve" name="Purchase Order awaiting payment"  string="Purchase Order to be Approved" parent="account.menu_finance_payables" action="almansur_puchase_request_to_approve_menuitem_action"  sequence="30"/>
+	 <menuitem id="account.menu_action_invoice_tree1" name="Client invoice" string="Client invoice" parent="account.menu_finance_receivables" sequence="1"/>
+ </data>
+</odoo>

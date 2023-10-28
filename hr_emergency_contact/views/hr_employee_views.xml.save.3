@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+<!--
+	<record id="hr_employee_view_form1" model="ir.ui.view">
+	    <field name="name">hr.employee.view.form.inherit1</field>
+	    <field name="model">hr.employee</field>
+	    <field name="inherit_id" ref="hr.view_employee_form"/>
+	    <field name="arch" type="xml">
+	        <xpath expr='//notebook' position="inside">
+	    	    <page string="Emergency Contacts Old">
+	    		<field name="emergency_contact_ids" nolabel="1" colspan="4" context="{'default_is_company':False}">
+			    <tree>
+	 	    		<field name='name'/>
+		    		<field name='function'/>
+				<field name='phone'/>
+		    		<field name='mobile'/>
+	 	    		<field name='email'/>
+			    </tree>
+	    		</field>
+	    	    </page>
+	    	</xpath>
+	    </field>
+	</record>-->
+
+
+        <record id="hr_employee_view_form" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//notebook' position="inside">
+                    <page string="Emergency Contacts">
+                        <field name="emergency_contact_ids_new" nolabel="1" colspan="4">
+                            <tree>
+                                <field name='name'/>
+                                <field name='relationship'/>
+				<field name='mobile_number'/>
+                                <field name='email'/>
+				<field name='address_id'/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+<!-- Custom view for easy uploading of emergency contacts -->
+
+	<record model="ir.ui.view" id="view_emergency_contact_form">
+	    <field name="name">Emergency Contacts</field>
+	    <field name="model">hr.emergency.contact</field>
+	    <field name="arch" type="xml">
+	    	<form string="Emergency Contacts">
+		<sheet>
+		    <field name='name'/>
+		    <field name='relationship'/> 
+		    <field name='mobile_number'/>
+		    <field name='email'/>
+		    <field name='address_id'/>
+		    <field name='related_employee'/>
+		</sheet>
+		</form>
+	    </field>
+	</record>
+
+	<record id = "hr_tree_view" model = "ir.ui.view">
+        <field name = "name">Emergency Contacts</field>
+        <field name = "model">hr.emergency.contact</field>
+        <!--<field name = "view_id" eval="False"/>-->
+        <field name = "arch" type = "xml">
+            <tree string = "Emergency Contacts" create = 'True'>
+                <field name = "name"/>
+                <field name = "relationship"/>
+                <field name = "mobile_number"/>
+            </tree>
+       </field>
+   </record>
+
+    <record id = "action_emergency_contract" model = "ir.actions.act_window">
+        <field name = "name">Emergency Contacts Action</field>
+        <field name = "type">ir.actions.act_window</field>
+        <field name = "res_model">hr.emergency.contact</field>
+        <field name = "view_type">form</field>
+        <field name = "view_mode">tree,form</field>
+        <field name = "view_id" ref= "hr_tree_view"/>
+   </record>
+
+    <record id = "action_emergency_contract2" model = "ir.actions.act_window">
+        <field name = "name">Emergency Contacts Action2</field>
+        <field name = "type">ir.actions.act_window</field>
+        <field name = "res_model">hr.emergency.contact</field>
+        <field name = "view_type">form</field>
+        <field name = "view_mode">tree,form</field>
+        <field name = "view_id" eval="False"/>
+    </record>
+
+   <menuitem
+   action = "action_emergency_contract"
+   id = "emergency_contact_menu"
+   parent = "hr_menus_arrange.hr_menus"
+   name = "Emergency Contacts"
+   sequence= "12"/>
+
+
+
+
+
+
+</odoo>

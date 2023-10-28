@@ -1,0 +1,168 @@
+
+# -*- coding: utf-8 -*-
+#'analytic_tag_ids':[(6,0,[request.analytic_tag_ids.id])]	
+from odoo import models, fields, api
+from datetime import datetime
+
+
+class account_payment(models.Model):
+    _inherit ="account.payment"
+	
+    payment_reference = fields.Char(copy=True, readonly= 0,
+                                    help="Reference of the document used to issue this payment. Eg. check number, file name, etc.")
+
+#    @api.multi
+#    def post(self, amount):
+#         super(self.post)
+#         petty_cash_entries = self.env['kay.petty.cash'].search([('journal_id','=',self.destination_journal_id.id)])
+#         if petty_cash_entries:
+#            print(petty_cash_entries)
+             
+
+
+
+class sales_reciept(models.Model):
+        _inherit=  "account.voucher.line"
+        account_analytic_id = fields.Many2one('account.analytic.account', 'Analytic Account',required=True)
+
+
+class customer_invoice(models.Model):
+    _inherit = "account.invoice.line"
+    account_analytic_id = fields.Many2one('account.analytic.account', 'Analytic Account',store=True, required=True)
+
+
+class purchase_request(models.Model):
+    _inherit = "purchase.request.line"
+    analytic_tag_ids = fields.Many2one('account.analytic.tag', 'Analytic tags',required=True)
+    unit_of_measure = fields.Char(string="Unit of Measure")
+#   unit_of_measure = fields.Many2one('product.uom',string="Unit of Measure")
+
+class purchase_request_inherit(models.Model):
+    _inherit = "purchase.request"
+    #requested_by_new = fields.Char(String="Requested by", store =True, required =True)
+
+class account_invoice_inherit(models.Model):
+    _inherit = "account.invoice"
+    state = fields.Selection([
+            ('draft','Draft'),
+	    ('waiting','Sent for approval'),
+            ('proforma', 'Pro-forma'),
+            ('proforma2', 'Pro-forma'),
+            ('open', 'Open'),
+            ('paid', 'Paid'),
+            ('cancel', 'Cancelled'),
+        ], string='Status', index=True, readonly=True, default='draft',
+        track_visibility='onchange', copy=False,
+        help=" * The 'Draft' status is used when a user is encoding a new and unconfirmed Invoice.\n"
+             " * The 'Pro-forma' status is used when the invoice does not have an invoice number.\n"
+             " * The 'Open' status is used when user creates invoice, an invoice number is generated. It stays in the open status till the user pays the invoice.\n"
+             " * The 'Paid' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled.\n"
+             " * The 'Cancelled' status is used when user cancel invoice.")
+    account_analytic_id = fields.Many2one('account.analytic.account', 'Analytic Account',compute="_compute_analytic",store=True)
+    analytic_tag_ids = fields.Many2one('account.analytic.tag', 'Analytic tags',compute="_compute_analytic",store=True)
+
+
+    @api.depends('invoice_line_ids')
+    def _compute_analytic(self):
+        for a in self:
+           if a.invoice_line_ids:
+               for b in self.invoice_line_ids[0]:
+                   a.account_analytic_id = b.account_analytic_id.id
+    	           a.analytic_tag_ids = b.analytic_tag_ids.id
+
+
+    @api.multi
+    def action_invoice_request_approval(self):
+        return self.write({'state': 'waiting'})
+
+      
+    @api.multi
+    def action_invoice_approve(self):
+        return self.write({'state': 'proforma2'})
+
+    @api.multi
+    def action_invoice_disapprove(self):
+        return self.write({'state': 'draft'})
+	
+    @api.multi
+    def draft_test(self):
+	return self.write({'state':'draft'})
+
+class purchase_order_inherit(models.Model):
+    _inherit = "purchase.order" 
+    purchase_request_ids = fields.Many2one('purchase.request',string="Purchase Request")
+
+
+    @api.multi
+    def button_approve(self):
+        res = super(purchase_order_inherit,self).button_approve()
+
+        #update product price on each product
+        for rec in self.order_line:
+            product_id = rec.product_id.id
+            product_price = rec.price_unit
+
+            product_obj = self.env['product.template'].search([('id',"=",product_id)])
+            product_obj.write({'standard_price':product_price})
+
+    @api.onchange('purchase_request_ids')
+    def _compute_order_lines(self):
+	    request_obj = self.env['purchase.request']
+            requests = request_obj.search([('id', "=", self.purchase_request_ids.id)])
+            lines = []
+            tag_ids = []
+            for request in requests.line_ids:
+                if request.analytic_tag_ids.id:
+
+                    tag_ids.append(request.analytic_tag_ids.id)
+                    lines.append((0, 0, {
+                     'product_id':request.product_id.id,
+                    'product_qty': request.product_qty,
+                    'account_analytic_id':request.analytic_account_id.id,
+		   'analytic_tag_ids':[(6, 0, tag_ids)],
+		    'name':request.product_id.name,
+                     'date_planned':datetime.now(),
+                      'product_uom':request.product_id.uom_id.id,
+                     'unit_of_measure':request.unit_of_measure,
+                    })
+		    )
+                else:
+		      lines.append((0, 0, {
+                     'product_id':request.product_id.id,
+			'product_qty': request.product_qty,
+                    'account_analytic_id':request.analytic_account_id.id,                    
+                    'name':request.product_id.name,
+                     'date_planned':datetime.now(),
+                      'product_uom':request.product_id.uom_id.id,
+                     'unit_of_measure':request.unit_of_measure,
+
+                    })  )
+
+     	    self.order_line = lines
+class purchase_order_line(models.Model):
+    _inherit="purchase.order.line"
+    
+
+    unit_of_measure = fields.Char(string="Unit of Measure")
+    
+class analytic_inheritance(models.Model):
+	_inherit =  "account.analytic.account"
+	
+	address = fields.Char("Site Address")
+	phone = fields.Char("Phone")
+
+
+
+
+class AccountCategory(models.Model):
+    _name = "account.category.custom"
+
+
+    category_name = fields.Char("Category Name")
+
+	
+class AccountExtended(models.Model):
+    _inherit="account.account"
+
+
+    account_category =  fields.Many2one("account.category.custom")

@@ -1,0 +1,137 @@
+<odoo>
+    <data>
+
+<!-- Inherit quotation report (from module purchase) -->
+<template id="report_purchase_order_inherit" inherit_id="purchase.report_purchaseorder_document">
+    <xpath expr="//div[@class='col-xs-4 vendor']" position="after">
+    <!-- <div class="col-xs-3"> 
+	<div t-if="o.partner_id">
+            <strong>Vendor</strong>
+	<br/>
+            <span t-field="o.partner_id.name"/>
+	<br/>
+            <span t-field="o.partner_id.street"/>
+	<br/>
+	    <span t-field="o.partner_id.mobile"/>
+        </div>                                                                                                                                                   
+      	                                                                                                                                                                                                                                                                                         
+     </div> -->
+<!--      <span style="display:inline-block; border-left: 2px solid #ccc; margin: 0 5px; height: 50px;"></span>-->
+      <div class="col-xs-4 locate"> 
+	<div t-if="o.location">
+            <strong>Deliver to:</strong>
+	<br/>
+            <p>
+		<span t-field="o.account_analytic_id.address"/><br/>
+                <span t-field="o.account_analytic_id.phone"/>
+	    </p>
+        </div>	                                                                                                                                                                                                                                                                                          
+     </div> 
+	
+     <div class="col-xs-4 partner"> 
+	<div t-if="o.partner_id">
+            <strong>Analytic Account:</strong>
+            <span t-field="o.account_analytic_id.name"/>
+	<br/><br/>
+            <strong>Order Date:</strong>
+            <span t-field="o.date_order" />
+	<br/><br/>
+	    <strong>Ref:</strong>
+            <span t-field="o.purchase_request_ids"/>
+        </div>                                                                                                                                                                                                                                                                                          
+     </div>
+     
+    </xpath>
+    <xpath expr="//div[@class='row new-row']" position="after">
+	<br/><br/><br/><br/><br/>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div  class="text-left" t-if="o.create_uid.name">
+                        <strong>Issued by:</strong>
+			<br/>
+                        <span class="text-center" t-field="o.create_uid.name"/>
+                    </div>
+                </div>
+                <div class="col-xs-6" t-if="o.approved_by">
+                    <div class="text-right">
+                        <strong>Approved by:</strong>
+                        <br/>
+                        <span class="text-left" t-field="o.approved_by.name"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+
+   <!-- <xpath expr="//div[@class='row mt32 mb32']" position="replace">
+               <table class="table table-condensed">
+                <thead>
+                    <tr>
+			<th>Analytics Account</th>
+                        <th class="text-center"><strong>Ref</strong></th>
+                        <th><strong>Order date</strong></th>
+                        <th><strong>Issued by</strong></th>
+			<th><strong>PR Request by</strong></th>
+			<th><strong>Approved by</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                     
+<span t-field="o.order_line.account_analytic_id" />
+<tr>
+<td>
+        <span t-field="o.account_analytic_id.name"/>
+</td>
+                        <td>
+                            <span t-field="o.purchase_request_ids.name" />
+                        </td>
+                           <td>
+                            <span class="text-center"  t-field="o.date_order" />
+                        </td>
+                           <td>
+                            <span t-field="o.create_uid.name" />
+                        </td>
+				<td>
+				   <span t-field="o.purchase_request_ids.requested_by.name" />
+				</td>
+				<td>
+       
+                    
+                    <span t-field="o.approved_by"/>
+                
+	</td>
+                    </tr>
+                </tbody>
+            </table>
+
+</xpath> -->
+
+</template>
+        <template id="report_vendor_bill_inherit" inherit_id="account.report_invoice_document">
+              <xpath expr="//div[@name='reference']" position="replace">
+                 <div name="referenc" t-if="o.reference" >
+                       <strong>Analytic account:</strong>
+                       <p t-field="o.reference"/>
+                  </div>
+             </xpath>
+        </template>
+
+        <!-- <template id="listing"> -->
+        <!--   <ul> -->
+        <!--     <li t-foreach="objects" t-as="object"> -->
+        <!--       <a t-attf-href="#{ root }/objects/#{ object.id }"> -->
+        <!--         <t t-esc="object.display_name"/> -->
+        <!--       </a> -->
+        <!--     </li> -->
+        <!--   </ul> -->
+        <!-- </template> -->
+        <!-- <template id="object"> -->
+        <!--   <h1><t t-esc="object.display_name"/></h1> -->
+        <!--   <dl> -->
+        <!--     <t t-foreach="object._fields" t-as="field"> -->
+        <!--       <dt><t t-esc="field"/></dt> -->
+        <!--       <dd><t t-esc="object[field]"/></dd> -->
+        <!--     </t> -->
+        <!--   </dl> -->
+        <!-- </template> -->
+    </data>
+</odoo>

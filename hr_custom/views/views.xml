@@ -1,0 +1,417 @@
+<odoo>
+  <data>
+
+
+    <record id="hr_attendance_form_extended" model="ir.ui.view">
+	<field name="name">Hr Attendance</field>
+	<field name="model">hr.attendance</field>
+	<field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+	<field name="arch" type="xml">
+
+		<xpath expr="//field[@name='check_out']" position="after">
+			<field name="total_hours_worked" string="Total Working Hours" readonly="1"/>
+		</xpath>
+
+	</field>
+    </record>
+
+    <record id="hr_attendance_tree_extended" model="ir.ui.view">
+	<field name="name">Hr Attendance</field>
+	<field name="model">hr.attendance</field>
+	<field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+	<field name="arch" type="xml">
+
+		<xpath expr="//field[@name='check_out']" position="after">
+			<field name="total_hours_worked" string="Total Working Hours"/>
+		</xpath>
+
+	</field>
+    </record>
+
+
+ 
+  <record id="hr_employee_form_extended" model="ir.ui.view">
+    <field name="name">Hr Employee Form</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr.view_employee_form"/>
+    <field name="arch" type="xml">
+        <!-- find field description and add the field
+             idea_ids after it -->
+        <xpath expr="//field[@name='employee_number']" position="after">
+          <field name="employee_type" string="Employee Type"/>
+	  <field name="analytic_account" string="Analytic Account" />
+	  <!--<field name="wage" string="Wage" groups="analytic.group_imad"/>-->
+	  <field name="pay_per_hour" groups="hr.group_hr_manager" />
+	  <field name="pay_per_month" groups="hr.group_hr_manager"/>
+        </xpath>
+	<!--<xpath expr="//field[@name='user_id']" position='attributes'>
+		<attribute name="invisible">1</attribute>
+	</xpath>-->
+	<xpath expr="//field[@name='passport_id']" position= 'after'>
+		<field name="pass_isuue_date" />
+		<field name="pass_expiry_date"/>
+		<field name="greencard_isuue_date"/>
+		<field name="greencard_expiry_date"/>
+	</xpath>
+        <xpath expr="//field[@name='address_home_id']" position="after">
+		<field name="home_country_addr"/>
+		
+	</xpath>
+	<xpath expr="//field[@name='home_country_addr']" position="after">
+	  <group string="Education Qualification">
+		<field name="discipline"/>
+		<field name="qualification_level"/>
+	  </group> 
+	</xpath>
+	<xpath expr="//field[@name='calendar_id']" position='before'>
+		<field name='join_date'/>
+	</xpath>
+	<xpath expr="//group[@name='birth']" position="after">
+		 
+		     <group string="Reference 1">
+                            <field name ="reference_name"/>
+                            <field name="reference_address"/>
+                            <field name="reference_email"/>
+                            <field name="reference_phone_number"/>
+                            <field name="reference_occupation"/>
+                            <field name="reference_employer_details"/>
+                            <field name="relationship_duration_with_reference"/>
+                        </group>
+		        <group string="Reference 2">
+                            <field name ="reference_name"/>
+                            <field name="reference_address"/>
+                            <field name="reference_email"/>
+                            <field name="reference_phone_number"/>
+                            <field name="reference_occupation"/>
+                            <field name="reference_employer_details"/>
+                            <field name="relationship_duration_with_reference"/>
+                       </group>
+
+
+                      
+                        <group  name="guarantor" string="Can these references serve as a guarantor?">
+                                <!--<label for="reference_is_guarantor"/>-->
+                                <h4> Mark if true: <field name="reference_is_guarantor"/></h4>
+                        </group>
+
+	</xpath>
+<!--	<xpath expr="//field[@name='reference_is_guarantor']" position="after">
+               <seperator String="Guarantor"/>
+               <field  attrs = "{'invisible':[('reference_is_guarantor','=',True)]}">
+                    <tree editable = "bottom">
+                        <field name="guarantor_name"/>
+                        <field name="guarantor_address"/>
+                        <field name="guarantor_occupation"/>
+                        <field name="guarantor_employer_details"/>
+                        <field name="relationship_duration_with_guarantor"/>
+                    </tree>
+                    <form>
+                        <group col="4">
+                            <field name="guarantor_name"/>
+                            <field name="guarantor_address"/>
+                            <field name="guarantor_occupation"/>
+                            <field name="guarantor_employer_details"/>
+                            <field name="relationship_duration_with_guarantor"/>
+                        </group>
+                    </form>
+                </field>
+                 
+        </xpath>-->
+        <xpath expr="//group[@name='guarantor']" position="after">
+                    <group name="residency" string="Residency And Languages">
+                        <field name = "states_lived_in"/>
+                        <field name = "languages"/>
+                        <field name = "will_to_serve"/>
+                        <field name = "reason_for_not_serving_in_Nigeria"/>                    
+		</group>
+
+                  <separator string="Professional Memberships And Trainings"/>
+                    <field name = "employee_professional_membership">
+                     <tree editable ="bottom">
+                        <field name = "professional_membership"/>
+                        <field name = "date"/>
+                     </tree>
+                     <form>
+                        <group col="4">
+                        <field name = "professional_membership"/>
+                        <field name = "date"/>
+                        </group>
+                     </form>
+
+                    </field>
+
+                    <separator string="Record Of Working Experience"/>
+                    <h4> Write a detailed job description for each position you held</h4>
+                    <group>
+                    <field name = "number_of_companies_employee_worked" string="Number of previous companies"/>
+                    </group>
+                    <field name = "employee_working_experience">
+                        <tree editable = "bottom">
+                            <field name ="from_year"/>
+                            <field name ="to_year"/>
+                            <field name ="name_of_employer"/>
+                            <field name ="address_of_employer"/>
+                            <field name ="employer_email"/>
+                            <field name ="position_held"/>
+                            <field name ="total_renumeration_per_annum"/>
+                            <field name ="job_description"/>
+			     <field name ="reason_for_leaving"/>
+                        </tree>
+                    </field>
+
+
+                <separator string="Give a detailed breakdown of your current renumeration package"/>
+                    <field name="employee_current_renumeration" >
+                        <tree editable = "bottom">
+                            <field name="item"/>
+                            <field name="amount"/>
+                        </tree>
+                    </field>
+                  <separator string="Medical History"/>
+                    <field name = "employee_medical_history">
+                        <tree editable = "bottom">
+                           <field name = "any_disability"/>
+                           <field name = "serious_illness"/>
+                           <field name ="type_of_serious_illness"/>
+                           <field name = "recurrent_illness"/>
+                           <field name = "type_of_recurrent_illness"/>
+                           <field name = "undergo_medical_test"/>
+                        </tree>
+                    </field>
+		    <separator string="Other Information" />
+                    <field name ="employee_hobbies_socials">
+                            <tree editable = "bottom">
+                                <field name ="hobbies"/>
+                                <field name = "socials"/>
+                            </tree>
+                    </field>
+                <field name="current_user"/>
+                <field name ="employee_likes_dislikes">
+                    <tree editable="bottom">
+                        <field name ="likes"/>
+                        <field name = "dislikes"/>
+                    </tree>
+                </field>
+        </xpath>
+    </field>
+</record>	
+
+
+
+
+
+<record model="ir.ui.view" id="hr_wage_report_form">
+    <field name="name">HR Wage</field>
+    <field name="model">hr.wage.report</field>
+    <field name="priority" eval="16"/>
+    <field name="arch" type="xml">
+        <!-- view content: <form>, <tree>, <graph>, ... -->
+	<form>
+	<header>
+	<button name="send_for_approval" class="oe_highlight" type="object" string="Send for approval" states="draft"/>
+	<button name="approve" class="oe_highlight" type="object" string="Approve Wage and Disburse"  states="pending" groups="analytic.group_imad"/>
+	<button name="reject" class="oe_highlight" type="object" string="Reject Wage" states="pending" groups="analytic.group_imad"/>
+
+	<field name="state" widget="statusbar"/>
+	</header>
+            <group>
+            <group>
+         	    <field name="prepared_by" readonly="1"/>
+		    <field name="approved_by" readonly="1"/>
+		    <field name="start_date"/>
+	   </group>
+	   <group>
+		<field name="date" readonly="1" />
+		<field name="total" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+		<field name="end_date"/>
+	   </group>
+	   </group>
+	   <notebook>
+		<page string="Wage Lines">
+		    <field name="hr_wage_line" attrs="{'readonly':[('state','not in',['draft'])]}">
+			<tree editable="bottom" >
+			   <field name="employee" force_save="1"/>
+			   <field name="employee_name" force_save="1"/>
+			   <field name="analytic_account" force_save="1"/>
+			   <field name="wage" force_save="1"/>
+			   <field name="hours_worked" readonly="1" force_save="1"/>
+			   <field name="total_wage" readonly="1" force_save="1"/>
+		          <!-- <field name="worked_hours_id"/> -->
+			   <field name="overtime" readonly="1" force_save="1"/>
+			 <field name="total_overtime" readonly="1" force_save="1"/>
+			   <field name="total" force_save="1"/>
+			</tree>
+		    </field>
+
+		</page>
+	   </notebook>
+	    
+	</form>
+    </field>
+</record>
+
+
+
+
+
+<record model="ir.ui.view" id="hr_wage_tree_view_custom">
+    <field name="name">Hr wage tree view</field>
+    <field name="model">hr.wage.report</field>
+    <field name="priority" eval="16"/>
+    <field name="arch" type="xml">
+        <!-- view content: <form>, <tree>, <graph>, ... -->
+	<tree>
+	   <field name="date" />
+	   <field name="prepared_by"/>
+	   <field name="approved_by"/>
+	   <field name="total"/>
+	   <field name="state"/>
+	</tree>
+    </field>
+</record>
+
+
+
+
+
+
+<record model="ir.ui.view" id="hr_ticketing_form_view">
+    <field name="name">Hr Ticketing</field>
+    <field name="model">hr.ticketing</field>
+    <field name="priority" eval="16"/>
+    <field name="arch" type="xml">
+        <!-- view content: <form>, <tree>, <graph>, ... -->
+	<form>
+	    <header>
+		<button name="send_for_approval" class="oe_highlight" type="object" string="Send for approval" states="draft"/>     
+		<button name="approve" class="oe_highlight" type="object" string="Approve ticket and Book"  states="pending" groups="analytic.group_imad"/>     
+		 <button name="reject" class="oe_highlight" type="object" string="Reject Wage" states="pending" groups="analytic.group_imad"/>           
+
+                 <field name="state"  widget="statusbar"/>
+    	    </header>
+	    <group>
+               <group>
+              <field name="employee" readonly="1"/>
+		<field name="destination"/>
+		</group>
+		<group></group>
+
+	   </group>
+
+	</form>
+    </field>
+</record>
+
+<record model="ir.ui.view" id="hr_ticketing_tree_view">
+    <field name="name">Hr Ticketing Tree view</field>
+    <field name="model">hr.ticketing</field>
+    <field name="priority" eval="16"/>
+    <field name="arch" type="xml">
+        <!-- view content: <form>, <tree>, <graph>, ... -->
+	<tree>
+		<field name="employee"/>
+		<field name="destination"/>
+		<field name="state"/>
+	</tree>
+    </field>
+</record>
+
+
+
+
+<record model="ir.actions.act_window" id="hr_ticketing_action">
+            <field name="name">Ticketing</field>
+            <field name="res_model">hr.ticketing</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="hr_custom.list">
+      <field name="name">hr_custom list</field>
+      <field name="model">hr_custom.hr_custom</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="hr_custom.action_window">
+      <field name="name">hr_custom window</field>
+      <field name="res_model">hr_custom.hr_custom</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="hr_custom.action_server">
+      <field name="name">hr_custom server</field>
+      <field name="model_id" ref="model_hr_custom_hr_custom"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="hr_custom" id="hr_custom.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="hr_custom.menu_1" parent="hr_custom.menu_root"/>
+    <menuitem name="Menu 2" id="hr_custom.menu_2" parent="hr_custom.menu_root"/>
+    -->
+    <!-- actions -->
+     <record model="ir.actions.act_window" id="hr_wage_action">
+            <field name="name">HR Wage Report</field>
+            <field name="res_model">hr.wage.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+     </record>
+
+
+
+   <record id="account_wage_report_action" model="ir.actions.act_window">
+            <field name="name">HR Wage</field>
+            <field name="res_model">hr.wage.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state', '=', 'approved')]</field>
+        </record>
+
+    <menuitem name="Hr Wage Report" id="hr_wage_report" parent="hr_menus_arrange.hr_menus"
+              action="hr_wage_action"/>
+
+   <menuitem name="Hr Wage Report" id="hr_wage_report_account" parent="account.menu_finance_payables"  
+	action="account_wage_report_action"/>
+   <menuitem id="ticketing_menu" name="Ticketing"
+                  parent="hr_menus_arrange.hr_menus"
+                  action="hr_ticketing_action"/>
+<!--    <record model="ir.ui.menu" id="hr_expense.menu_hr_expense_root">
+        <field name="groups_id" eval="[(6,0,[ref('group_hr_hide_menu')])]"/>
+    </record>
+    <record model="ir.ui.menu" id="hr_holidays.menu_hr_holidays_root">
+       <field name="groups_id" eval="[(6,0,[ref('group_hr_hide_menu')])]"/>
+    </record>
+    <record model="ir.ui.menu" id="hr_payroll.menu_hr_payroll_root">
+      <field name="groups_id" eval="[(6,0,[ref('group_hr_hide_menu')])]"/>
+    </record>
+    <record model="ir.ui.menu" id="hr_attendance.menu_hr_attendance_root">
+      <field name="groups_id" eval="[(6,0,[ref('group_hr_hide_menu')])]"/>
+    </record> -->
+  </data>
+</odoo>

@@ -1,0 +1,7 @@
+<odoo>
+<data>
+	<record id="group_hr_hide_menu" model="res.groups">                                                      
+                 <field name="name">HR show unwanted menu</field>                                                           
+         </record> 
+</data>
+</odoo>

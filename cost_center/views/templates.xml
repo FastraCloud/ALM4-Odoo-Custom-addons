@@ -1,0 +1,134 @@
+<odoo>
+    <data>
+
+
+<template id="report_trial_balance_custom" inherit_id="account.report_trialbalance">
+            <xpath expr="//table[@class='table table-condensed']" position="before">
+              
+			
+	  <div class="row">
+                  <div class="col-xs-6 col-md-6">
+                                <span><strong>Analytic Account(s): </strong></span>
+                                <br/>
+                                <p>
+                                    <t t-foreach="docs" t-as="o">
+                                        
+                                        <t t-foreach="o.analytic_account_id" t-as="analytic_acc">
+                                            <t t-if="o.analytic_account_id">
+                                                <i><span t-field="analytic_acc.code" /> <span t-field="analytic_acc.name" />, </i>
+                                            </t>
+                                            <t t-elif="o.analytic_acc_ids_size is 0">
+                                                <b><span>Unspecified</span></b>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </p>
+                  </div>
+
+
+
+		  <div class="col-xs-6 col-md-6 text-center">
+				  <span><strong>Analytic Tag(s): </strong></span>
+                                <!-- <br/> -->
+                                <p>
+                                    <t t-foreach="docs" t-as="o">
+                                        <!-- <span t-field="o.analytic_acc_ids.name" t-field-options='{"fields": ["name"]}' /> -->
+                                        <t t-foreach="o.analytic_tag_ids" t-as="analytic_tag">
+                                            <t t-if="o.analytic_tag_ids">
+                                                <i><span t-field="analytic_tag.name" />, </i>
+                                            </t>
+                                          
+                                        </t>
+                                    </t>
+                                </p>
+
+	          </div>
+			
+			
+		    <div class="col-xs-6 col-md-6 text-center">
+                                  <span><strong>Analytic Label(s): </strong></span>
+                                <!-- <br/> -->
+                                <p>
+                                    <t t-foreach="docs" t-as="o">
+                                        <!-- <span t-field="o.analytic_acc_ids.name" t-field-options='{"fields": ["name"]}' /> -->
+                                        <t t-foreach="o.analytic_label_id" t-as="analytic_label">
+                                            <t t-if="o.analytic_label_id">
+                                                <i><span t-field="analytic_label.name" />, </i>
+                                            </t>
+
+                                        </t>
+                                    </t>
+                                </p>
+                          </div>
+
+           </div>
+        </xpath>
+     </template>        
+
+
+<template id="report_financial_custom" inherit_id="account.report_financial">
+            <xpath expr="//div[@class='row mt32 mb32']" position="after">
+
+
+          <div class="row mt32 mb32">
+                  <div class="col-xs-6 col-md-6">
+                                <span><strong>Analytic Account(s): </strong></span>
+                                <br/>
+                                <p>
+                                    <t t-foreach="docs" t-as="o">
+
+                                        <t t-foreach="o.analytic_account_id" t-as="analytic_acc">
+                                            <t t-if="o.analytic_account_id">
+                                                <i><span t-field="analytic_acc.code" /> <span t-field="analytic_acc.name" />, </i>
+                                            </t>
+                                            <t t-elif="o.analytic_acc_ids_size is 0">
+                                                <b><span>Unspecified</span></b>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </p>
+                            </div>
+                                <div class="col-xs-6 col-md-6 text-center">
+                                  <span><strong>Analytic Tag(s): </strong></span>
+                                <!-- <br/> -->
+                                <p>
+                                    <t t-foreach="docs" t-as="o">
+                                        <!-- <span t-field="o.analytic_acc_ids.name" t-field-options='{"fields": ["name"]}' /> -->
+                                        <t t-foreach="o.analytic_tag_ids" t-as="analytic_tag">
+                                            <t t-if="o.analytic_tag_ids">
+                                                <i><span t-field="analytic_tag.name" />, </i>
+                                            </t>
+
+                                        </t>
+                                    </t>
+                                </p>
+
+                        </div>
+
+			  <div class="col-xs-6 col-md-6 text-center">
+                                  <span><strong>Analytic Label(s): </strong></span>
+                                <!-- <br/> -->
+                                <p>
+                                    <t t-foreach="docs" t-as="o">
+                                        <!-- <span t-field="o.analytic_acc_ids.name" t-field-options='{"fields": ["name"]}' /> -->
+                                        <t t-foreach="o.analytic_label_id" t-as="analytic_label">
+                                            <t t-if="o.analytic_label_id">
+                                                <i><span t-field="analytic_label.name" />, </i>
+                                            </t>
+
+                                        </t>
+                                    </t>
+                                </p>
+                          </div>
+
+
+
+            </div>
+         </xpath>
+    </template>
+
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <record id="view_account_analytic_account_form_inherit" model="ir.ui.view">
+            <field name="name">analytic.analytic.account.form.inherit</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="location"/>
+                </xpath>
+            </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_transfer_request_form">
+            <field name="name">transfer.request.form</field>
+            <field name="model">internal.transfer.request</field>
+            <field name="arch" type="xml">
+                <form string="Internal Transfer Request" version="7.0">
+                <header>
+                    <button name="button_draft"
+                            states="to_approve,approved,rejected,done"
+                            string="Reset"
+                            type="object"/>
+                           <!-- groups="stock.group_stock_manager"/>-->
+                    <button name="button_to_approve" states="draft"
+                            string="Request Approval" type="object"
+                            class="oe_highlight"/>
+                    <button name="button_approved"
+                            states="to_approve"
+                            string="Approve"
+                            type="object"
+                            class="oe_highlight"
+                            groups="stock.group_stock_manager"/>
+                    <button name="button_done"
+                            states="approved"
+                            string="Done"
+                            type="object"
+                            class="oe_highlight"
+                            groups="stock.group_stock_manager"/>
+                    <button name="button_rejected"
+                            states="to_approve,approved"
+                            string="Reject"
+                            type="object"
+                            groups="stock.group_stock_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,to_approve,approved,done,rejected"
+                           statusbar_colors='{"approved":"blue"}'/>
+                </header>
+	    <sheet>
+		 <div class="oe_button_box" name="button_box">
+                        <button type="object"
+                            name="action_view_purchase_request_line"
+                            class="oe_stat_button"
+                            attrs="{'invisible':[('line_count', '=', 0)]}"
+                            icon="fa-list">
+                            <field name="line_count" widget="statinfo"
+                                   string="Lines"/>
+                        </button>
+                 </div>
+
+		<group>
+		    <group>
+			<field name="name" readonly ="1"/>
+		    </group>
+
+                        <group>
+                            <field name="requested_by" 
+                                     readonly="1"/>
+                            <field name="assigned_to"/>
+                        </group>
+                        <group>
+                            <field name="description"/>
+			    <!--<field name="origin"/>-->
+                        </group>
+                        <group>
+                            <field name="date_start"/>
+                                    <!--attrs="{'readonly': [('is_editable','=', False)]}"/>-->
+			    <field name = "request_location" />
+                           <!-- <field name="picking_type_id"
+                                   attrs="{'readonly': [('is_editable','=', False)]}"/>-->
+                        </group>
+                </group>
+	</sheet>
+	</form>
+	</field>
+	</record>
+	
+	
+
+
+	<record model="ir.actions.act_window" id="transfer_request_form_action">
+            <field name="name">Transfer Requests</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">internal.transfer.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="search_view_id" ref="view_purchase_request_search"/>-->
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to start a new internal transfer request process.
+              </p><p>
+                An internal transfer request is an instruction to request for 
+                a certain quantity of materials services from other location stores, so that they are
+                available at a certain point in time.
+              </p>
+            </field>
+        </record>
+
+	<menuitem
+            id="menu_internal_transfer_request"
+            parent="stock.menu_stock_warehouse_mgmt"
+            action="transfer_request_form_action"/>
+
+
+
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="alm-multi-location.list">
+      <field name="name">alm-multi-location list</field>
+      <field name="model">alm-multi-location.alm-multi-location</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="alm-multi-location.action_window">
+      <field name="name">alm-multi-location window</field>
+      <field name="res_model">alm-multi-location.alm-multi-location</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="alm-multi-location.action_server">
+      <field name="name">alm-multi-location server</field>
+      <field name="model_id" ref="model_alm-multi-location_alm-multi-location"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="alm-multi-location" id="alm-multi-location.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="alm-multi-location.menu_1" parent="alm-multi-location.menu_root"/>
+    <menuitem name="Menu 2" id="alm-multi-location.menu_2" parent="alm-multi-location.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="alm-multi-location.menu_1_list" parent="alm-multi-location.menu_1"
+              action="alm-multi-location.action_window"/>
+    <menuitem name="Server to list" id="alm-multi-location" parent="alm-multi-location.menu_2"
+              action="alm-multi-location.action_server"/>
+    -->
+
+    
+  </data>
+</odoo>

@@ -1,0 +1,40 @@
+<odoo>
+
+<data>
+
+    <record id="create_section_for_thesis_template" model="email.template">
+
+        <field name="name">Petty Cash Appproval</field>
+
+        <field name="model_id" ref="account.pettycash.fund"/>
+
+        <!-- <field name="email_from">lms@uet.edu.pk</field> -->
+
+        <!-- <field name="email_cc">${(self.env.user.login)|safe}</field> -->
+
+        <field name="subject">Petty cash fund awaiting approval</field>
+
+        <field name="body_html"><![CDATA[
+
+            <p><strong>Dear  manager</strong></p>
+
+
+
+            <p>A petty cash fund <strong>--name--</strong> issued by<strong> --issued_by--<strong> to <strong>--custodian--</strong> Awaits your approval</p>
+
+            <p>After successfully complestion of above activities, please reply-all to this email thread.</p>
+
+            <p>Regards,</p>
+
+            <p>Oric Department</p>
+
+            <p><strong>--campus--</strong></p>
+
+        ]]>
+
+        </field>
+
+    </record>
+
+</data>
+</odoo>

@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record id="ir_cron_scheduler_pending_appoval" model="ir.cron">
+            <field name="name">Asset Request Scheduler</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">12</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'asset.request'" name="model"/>
+            <field eval="'check_for_pending_approval'" name="function"/>
+            <field name="args" eval="'()'"/>
+        </record>
+
+        <record id="ir_cron_scheduler_pending_receive" model="ir.cron">
+            <field name="name">Asset Request Scheduler</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">12</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'asset.request'" name="model"/>
+            <field eval="'check_for_pending_receive'" name="function"/>
+            <field name="args" eval="'()'"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+    <record model="ir.actions.act_window" id="action_alm_report">
+        <field name="name">ALM Report</field>
+        <field name="res_model">alm.report</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem 
+        id="menu_alm_report"
+        web_icon="alm_report,static/description/icon.png" 
+        name="ALM Reports"
+        action="action_alm_report"
+    />
+<!-- 
+    <record model="ir.actions.act_window" id="action_ng_service_center_tehnician">
+        <field name="name">Assign technician</field>
+        <field name="res_model">ng_service_center.technician</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem 
+        id="menu_technician" 
+        name="Technicians" 
+        parent="menu_repairs" 
+        action="action_ng_service_center_tehnician" 
+    /> -->
+
+
+</odoo>

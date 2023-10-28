@@ -1,0 +1,77 @@
+<odoo>
+  <data>
+
+
+       <record id="hrpayslip_form_inherit" model="ir.ui.view">
+            <field name="name">hrpayslip_form_inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='number']" position="before">
+                    <field name='workdays'/>
+                </xpath>
+            </field>
+        </record>
+
+
+		<menuitem id="hr_payroll_menu" parent="account.menu_finance_reports" name="Payroll Report" 
+    action="hr_payslip_monthly_report.action_hr_payslip_view_report"/>
+
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="fastra_payrol_menu.list">
+      <field name="name">fastra_payrol_menu list</field>
+      <field name="model">fastra_payrol_menu.fastra_payrol_menu</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="fastra_payrol_menu.action_window">
+      <field name="name">fastra_payrol_menu window</field>
+      <field name="res_model">fastra_payrol_menu.fastra_payrol_menu</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="fastra_payrol_menu.action_server">
+      <field name="name">fastra_payrol_menu server</field>
+      <field name="model_id" ref="model_fastra_payrol_menu_fastra_payrol_menu"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="fastra_payrol_menu" id="fastra_payrol_menu.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="fastra_payrol_menu.menu_1" parent="fastra_payrol_menu.menu_root"/>
+    <menuitem name="Menu 2" id="fastra_payrol_menu.menu_2" parent="fastra_payrol_menu.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="fastra_payrol_menu.menu_1_list" parent="fastra_payrol_menu.menu_1"
+              action="fastra_payrol_menu.action_window"/>
+    <menuitem name="Server to list" id="fastra_payrol_menu" parent="fastra_payrol_menu.menu_2"
+              action="fastra_payrol_menu.action_server"/>
+    -->
+  </data>
+</odoo>

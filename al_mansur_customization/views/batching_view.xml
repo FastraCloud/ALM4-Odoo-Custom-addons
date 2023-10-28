@@ -1,0 +1,196 @@
+<odoo>
+<data>
+
+
+
+   <record id="almansur_purchase_request_form_inherit22" model="ir.ui.view">
+                <field name="name">almansur.account.purchase_request.form.inherit2</field>
+                <field name="model">purchase.request</field>
+                <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='description']" position="after">
+<!--		       <field name="send_to" attrs="{'readonly':['state','not in',('draft')]}"/>-->
+			<field name="send_to"/>
+                     
+                    </xpath>
+                </field>
+        </record>
+
+
+  <record id="almansur_sael_order_form_inherit2" model="ir.ui.view">
+                <field name="name">Sales Order Extended</field>
+                <field name="model">sale.order</field>
+                <field name="inherit_id" ref="sale.view_order_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='partner_id']" position="after">
+                        <field name="purchase_request_id"/>
+                    </xpath>
+                </field>
+        </record>
+
+
+  <record id="almansur_purchase_request_search_inherit2" model="ir.ui.view">
+                <field name="name">Pr Seach Extended</field>
+                <field name="model">purchase.request</field>
+                <field name="inherit_id" ref="purchase_request.view_purchase_request_search"/>
+                <field name="arch" type="xml">
+			   <xpath expr="//field[@name='state']" position="after">
+                        <field name="send_to"/>
+                    </xpath>
+			
+                    <xpath expr="//filter[@name='state_draft']" position="after">
+    <filter string="Sent To"  name="send_to_batching"
+        domain="[('send_to','=','batching')]"/>
+</xpath>
+                </field>
+        </record>
+
+
+<!--view for batchin plant production-->
+      <record model="ir.ui.view" id="production_form_view">
+            <field name="name">BatchinglPlant Production Form</field>
+            <field name="model">bp.production</field>
+            <field name="arch" type="xml">
+                <form string="Production Form">
+		<header>
+		<Button name="update_inventory_action" string="Validate and Update inventory" class="oe_highlight" type="object" attrs="{'invisible':[('state','=','posted')]}"/>	
+			
+			<field name="state" widget="statusbar" />
+			</header>
+                    <sheet>
+			<group>
+                        <group>
+                            <field name="name" attrs="{'readonly':[('state','=','posted')]}"/>
+                            <field name="purchase_request_id" attrs="{'readonly':[('state','=','posted')]}"/>
+                        </group>
+			<group>
+				     <field name="created_by" attrs="{'readonly':[('state','=','posted')]}"/>
+        <field name="production_date" attrs="{'readonly':[('state','=','posted')]}"/>
+
+			</group>
+		</group>
+		     <notebook>
+			<page string="Production lines">
+				<field name="production_line" attrs="{'readonly':[('state','=','posted')]}">
+
+					<tree editable="bottom">
+					  <field name="product_id"/>
+					  <field name="qty_produced" />
+					 <field name="stock_location_id" />
+
+					</tree>
+
+				</field>
+			</page>
+
+			
+
+			</notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+      <record model="ir.ui.view" id="production_tree_view">
+            <field name="name">Batching Plant Production Form</field>
+            <field name="model">bp.production</field>
+            <field name="arch" type="xml">
+              
+          <tree string="Batching Plant Production">
+    <field name="name"/>
+    <field name="purchase_request_id"/>
+     <field name="created_by"/>
+	<field name="production_date"/>
+            <field name="state" />
+</tree>
+            </field>
+        </record>
+
+
+
+<!--        <record model="ir.ui.view" id="view_purchase_request_tree_batching">
+            <field name="name">purchase.request.tree</field>
+            <field name="model">purchase.request</field>
+            <field name="arch" type="xml">
+                <tree decoration-bf="message_needaction==True"
+                      decoration-info="state in ('draft','to_approve')"
+                      decoration-muted="state in ('rejected')"
+                      string="Purchase Request">
+                    <field name="message_needaction" invisible="1"/>
+                    <field name="name"/>
+                    <field name="date_start"/>
+                    <field name="requested_by"/>
+                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                    <field name="origin"/>
+                    <field name="state2"/>
+                </tree>
+          </field>
+        </record>
+-->
+
+
+
+
+<record model="ir.actions.act_window" id="action_bp_production">
+    <field name="name">Batching Plant Production</field>
+    <field name="res_model">bp.production</field>
+    <field name="view_mode">tree,form</field>
+
+</record>
+
+
+
+
+<record model="ir.actions.act_window" id="action_operations_pr">
+    <field name="name">Operations Purchase Request To Procurement</field>
+    <field name="res_model">purchase.request</field>
+    <field name="view_mode">tree,form</field>
+    
+</record>
+
+<record model="ir.actions.act_window" id="action_site_pr">
+    <field name="name">Site Purchase Request</field>
+    <field name="res_model">purchase.request</field>
+    <field name="view_mode">tree,form</field>
+<!--    <field name="view_id" ref="view_purchase_request_tree_batching"/>-->
+        <field name="context">{'search_default_send_to_batching':1}</field>
+
+</record>
+
+<record model="ir.actions.act_window" id="batching_sales_order">
+    <field name="name">Sales Order For Site</field>
+    <field name="res_model">sale.order</field>
+    <field name="view_mode">tree,form</field>     
+</record>
+<record model="ir.actions.act_window" id="batching_bom">
+    <field name="name">Bill of Material</field>
+    <field name="res_model">mrp.bom</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<record model="ir.actions.act_window" id="batching_production">
+    <field name="name">Production</field>
+    <field name="res_model">mrp.production</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+
+
+
+
+
+
+<menuitem name="Batching Plant" id="batching_menu" groups="group_batching" web_icon="account,static/description/icon.png"/>
+<!--<menuitem id="batch_pr_menu" name="Operations Purchase Request" parent="batching_menu" action="action_operations_pr" sequence="1"/>-->
+<menuitem id="batch_pr_menu_site" name="Site Purchase Request" parent="batching_menu" action="action_site_pr" sequence="2"/>
+<menuitem id="batch_sales_order_menu" name="Sales Order" parent="batching_menu" action="batching_sales_order" sequence="3"/>
+<!--<menuitem id="batch_production_menu" name="Batching Plant Production" parent="batching_menu" action="action_bp_production" groups="group_batching"  sequence="4"/>-->
+<menuitem id="batch_production_menu" name="Batching Plant Production" parent="batching_menu" groups="group_batching"  sequence="4"/>
+<menuitem id="batch_bom_menu" name="Bill of Material" parent="batch_production_menu" action="batching_bom" sequence="1"/>
+<menuitem id="batch_production_menu_2" name="Production" parent="batch_production_menu" action="batching_production" sequence="2"/>
+
+
+</data>
+</odoo>
